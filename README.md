@@ -1,4 +1,4 @@
-# Stats Can API Usage
+# Stats Can API Scripts
 Some scripts to update tables using the StatsCan API https://www.statcan.gc.ca/eng/developers/wds/user-guide
 
 # Scripts
