@@ -84,6 +84,21 @@ def copy_directory_to_minio(directory: str, storage, bucket):
     "--minio_bucket", is_flag=False, help="Upload downloaded tables to MinIO bucket"
 )
 def main(minio_bucket):
+
+    # Check if minio bucket input works
+    if minio_bucket:
+        # Setup minIO bucket
+        storage = daaas_storage.get_minimal_client()
+        bucket = minio_bucket
+
+        # If the bucket does not follow the convention, this will throw an AccessDenied exception.
+        if not storage.bucket_exists(bucket):
+            storage.make_bucket(bucket, storage._region)
+            print(f"Created bucket: {bucket}")
+        else:
+            print("Your bucket already exists. 👍")
+
+    # Start downloading updated tables
     start = timer()
 
     # Create data folder
@@ -109,17 +124,6 @@ def main(minio_bucket):
     # If minio bucket is specified then also upload to that bucket
     if minio_bucket:
         start = timer()
-
-        # Setup minIO bucket
-        storage = daaas_storage.get_minimal_client()
-        bucket = minio_bucket
-
-        # If the bucket does not follow the convention, this will throw an AccessDenied exception.
-        if not storage.bucket_exists(bucket):
-            storage.make_bucket(bucket, storage._region)
-            print(f"Created bucket: {bucket}")
-        else:
-            print("Your bucket already exists. 👍")
 
         # Copy all csv files
         copy_directory_to_minio(data_path, storage, bucket)
