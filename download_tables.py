@@ -4,6 +4,8 @@ import requests
 from timeit import default_timer as timer
 import zipfile
 
+dirname = os.path.dirname(__file__)
+
 # Base url to StatsCan API
 base_url = "https://www150.statcan.gc.ca/t1/wds/rest/"
 
@@ -23,11 +25,11 @@ def download_table(productId: str):
     table_url = response.json()["object"]
 
     # Download table csv
-    download_path = f"data/{productId}.zip"
+    download_path = os.path.join(dirname, f"data/{productId}.zip")
     download_url(url=table_url, save_path=download_path)
 
     # Unzip folder
-    unzip_path = f"data/{productId}"
+    unzip_path = os.path.join(dirname, f"data/{productId}")
     with zipfile.ZipFile(download_path, "r") as zip_ref:
         zip_ref.extractall(unzip_path)
 
@@ -39,8 +41,9 @@ if __name__ == "__main__":
     start = timer()
 
     # Create data folder
-    if not os.path.exists("data/"):
-        os.makedirs("data/")
+    data_path = os.path.join(dirname, "data/")
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
 
     # Get changed tables list
     current_date = str(date.today())
