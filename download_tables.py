@@ -58,4 +58,4 @@ if __name__ == "__main__":
 
     end = timer()
     elapsed_time = timedelta(seconds=round(end - start))
-    print(f"End of scraping animelists elapsed time of {elapsed_time}")
+    print(f"End of downloading tables elapsed time of {elapsed_time}")
