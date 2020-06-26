@@ -1,3 +1,7 @@
+### This a script to download all updated tables for current day from public STC tables
+### and optianally upload them to a MinIO bucket if ran from the Advanced Analytics Workspace
+
+
 import click
 from datetime import date, timedelta
 import os
